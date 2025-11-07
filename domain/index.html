@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Oracles Emporium</title>
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #001F3F;
+            color: #FFFFF0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        h1, h2, h3 {
+            font-family: 'Garamond', 'Times New Roman', serif;
+            color: #D4AF37;
+        }
+        a {
+            color: #D4AF37;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #FFFFF0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section - Background with Profile Image */
+        .hero {
+            height: 100vh;
+            /* PATH NOW SIMPLIFIED: /assets/profile.jpeg (Assuming you moved the file) */
+            background-image: url('/assets/profile.jpeg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem 0;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 31, 63, 0.4);
+        }
+        .hero-top {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+        .hero-top h1 {
+            font-size: 4rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        .crest {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1;
+            width: 250px;
+            height: 250px;
+            border: 2px solid #D4AF37;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(212, 175, 55, 0.3);
+        }
+        .hero-bottom {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 0 1rem;
+        }
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+        .cta-triangle {
+            background: #D4AF37;
+            color: #001F3F;
+            padding: 2rem;
+            border-radius: 50%;
+            font-size: 2.5rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-top: -30px;
+            display: inline-block;
+            position: relative;
+        }
+        .cta-triangle:hover {
+            background: #FFFFF0;
+            transform: scale(1.1);
+        }
+
+        /* Hidden Media Elements (No Visible Controls/Slide) */
+        .hero-media {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+        .hero-media video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+        }
+        .hero-media audio {
+            display: none;
+        }
+
+        /* Apps Section */
+        .apps-section {
+            padding: 40px 0;
+            background: linear-gradient(to bottom, #001F3F, #000000);
+        }
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+        }
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .app-card {
+            background: rgba(0, 31, 63, 0.8);
+            border: 2px solid #D4AF37;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .app-card:hover::before {
+            transform: translateX(100%);
+        }
+        .app-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+        .app-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            object-fit: contain;
+            background: #D4AF37;
+        }
+        /* NOTE: Assuming image files are ALSO moved directly under /assets */
+        .cosmic-weave .app-icon { background: linear-gradient(45deg, #001F3F, #D4AF37); }
+        .embers .app-icon { background: linear-gradient(to bottom, #FF4500, #D4AF37); }
+        .pans-oracle .app-icon { background: linear-gradient(135deg, #8B4513, #D4AF37); }
+        .pre-school .app-icon { background: linear-gradient(45deg, #FFD700, #D4AF37); }
+        .stinkers .app-icon { background: linear-gradient(to right, #228B22, #D4AF37); }
+        .tesla .app-icon { background: linear-gradient(90deg, #001F3F, #D4AF37); }
+        .app-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .app-price {
+            font-size: 1.2rem;
+            color: #D4AF37;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .app-description {
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+        .app-button {
+            background: transparent;
+            border: 1px solid #D4AF37;
+            color: #D4AF37;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .app-button:hover {
+            background: #D4AF37;
+            color: #001F3F;
+        }
+
+        /* Download Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 31, 63, 0.8);
+            backdrop-filter: blur(5px);
+            overflow-y: auto;
+        }
+        .modal-content {
+            background: rgba(0, 31, 63, 0.9);
+            margin: 5% auto;
+            padding: 20px;
+            border: 2px solid #D4AF37;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            text-align: center;
+            position: relative;
+        }
+        .close {
+            color: #D4AF37;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: #FFFFF0;
+        }
+        .download-links {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .download-links h4 {
+            color: #D4AF37;
+            text-align: center;
+        }
+        .platform-section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #D4AF37;
+            border-radius: 5px;
+        }
+        .platform-section p {
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        .platform-section h5 {
+            font-size: 1rem;
+            color: #D4AF37;
+            margin-bottom: 5px;
+        }
+
+        /* Test Space Section */
+        .test-space {
+            padding: 40px 0;
+            background: rgba(0, 31, 63, 0.8);
+            margin: 40px 0;
+            border: 2px solid #D4AF37;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .test-space h2 {
+            color: #D4AF37;
+        }
+
+        /* Footer */
+        .footer {
+            background: #000000;
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid #D4AF37;
+        }
+        .footer p {
+            margin: 0;
+            opacity: 0.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-top h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.2rem; }
+            .section-title { font-size: 2rem; }
+            .apps-grid { grid-template-columns: 1fr; }
+            .hero { justify-content: flex-start; padding: 1rem 0; }
+            .hero-top { margin-bottom: auto; }
+            .hero-bottom { margin-top: auto; padding: 1rem; }
+            .modal-content { width: 95%; margin: 2% auto; padding: 15px; }
+            .platform-section p { font-size: 0.8rem; }
+            .crest { width: 150px; height: 150px; top: 10px; left: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="hero-media" class="hero-media">
+        <video id="emporium-video">
+            <source src="/assets/EMPORUIM.mp4" type="video/mp4">
+            Your browser doesn't support video. Mystic visions await...
+        </video>
+        <audio id="emporium-audio">
+    <source src="/assets/music/The Oracles Emporuim.mp3" type="audio/mpeg">
+    Whispers from the emporium...
+</audio>
+    </div>
+
+    <section class="hero">
+        <div class="hero-top">
+            <img src="/assets/crest.png" alt="The Eternal Tribe Crest" class="crest">
+            <h1>The Oracles Emporium</h1>
+        </div>
+        <div class="hero-bottom">
+            <p>Unlock the Unseen: Exclusive Realms Await</p>
+            <div class="cta-triangle" onclick="enterEmporium()" title="Enter the Emporium">△</div>
+        </div>
+    </section>
+
+    <section id="apps" class="apps-section">
+        <div class="container">
+            <h2 class="section-title">Featured Oracles</h2>
+            <div class="apps-grid">
+                <div class="app-card cosmic-weave">
+                    <img src="/assets/cosmic.png" alt="Cosmic Weave Icon" class="app-icon">
+                    <h3 class="app-title">Cosmic Weave</h3>
+                    <div class="app-price">$3</div>
+                    <p class="app-description">An application that drags emojis into orbital eye, spits Suno-ready lyrics/styles/titles in seconds. Weave fun, export formatted files, funnel straight to Suno and generate music videos.</p>
+                    <div class="app-button" onclick="showDownloads('cosmic-weave')">Acquire</div>
+                </div>
+
+                <div class="app-card embers">
+                    <img src="/assets/embers.png" alt="Embers of Release Icon" class="app-icon">
+                    <h3 class="app-title">Embers of Release</h3>
+                    <div class="app-price">$3</div>
+                    <p class="app-description">A ritual app for surrender: Box breathing, Latin invocations, secure journaling, and alchemical burning animations to release burdens in a sacred digital space.</p>
+                    <div class="app-button" onclick="showDownloads('embers')">Acquire</div>
+                </div>
+
+                <div class="app-card pans-oracle">
+                    <img src="/assets/pansoracle.png" alt="Pan's Oracle Icon" class="app-icon">
+                    <h3 class="app-title">Pan's Oracle</h3>
+                    <div class="app-price">$3</div>
+                    <p class="app-description">Embark on a celestial journey with this whimsical lottery number generator inspired by ancient Greek mythology. Channel Pan and Apollo for mystic numbers and poetic inspiration.</p>
+                    <div class="app-button" onclick="showDownloads('pans-oracle')">Acquire</div>
+                </div>
+
+                <div class="app-card pre-school">
+                    <img src="/assets/preschool.png" alt="Pre School Icon" class="app-icon">
+                    <h3 class="app-title">Pre School</h3>
+                    <div class="app-price">$3</div>
+                    <p class="app-description">A fun, offline educational app for 4-7 year olds focusing on family, colors, numbers, and alphabet. Parent-led sessions with emojis, sounds, and progress tracking for community learning.</p>
+                    <div class="app-button" onclick="showDownloads('pre-school')">Acquire</div>
+                </div>
+
+                <div class="app-card stinkers">
+                    <img src="/assets/stinkerbuddy.png" alt="Stinkers Buddy Icon" class="app-icon">
+                    <h3 class="app-title">Stinkers Buddy</h3>
+                    <div class="app-price">$6</div>
+                    <p class="app-description">Demystify credit risk with this open-source tool. Calculate PD and LGD metrics transparently—empower borrowers and lenders with simple, verifiable financial insights.</p>
+                    <div class="app-button" onclick="showDownloads('stinkers')">Acquire</div>
+                </div>
+
+                <div class="app-card tesla">
+                    <img src="/assets/teslaoracle.png" alt="Tesla's Trigram Oracle Icon" class="app-icon">
+                    <h3 class="app-title">Tesla's Trigram Oracle</h3>
+                    <div class="app-price">$9</div>
+                    <p class="app-description">A powerful guidance tool using Gemini AI to interpret I Ching trigrams through Nikola Tesla's principles. Seek wisdom from ancient hexagrams and electric innovation.</p>
+                    <div class="app-button" onclick="showDownloads('tesla')">Acquire</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="test-space">
+        <div class="container">
+            <h2>Test Realm: Drop Files Here</h2>
+            <p>Upload test files (e.g., PDFs, MP3s) for previews. Porting Kindle/SoundCloud soon...</p>
+            <iframe src="/test-file.pdf" width="400" height="300" style="border: 1px solid #D4AF37; margin: 10px;"></iframe>
+        </div>
+    </section>
+
+    <div id="download-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDownloads()">&times;</span>
+            <h3 id="modal-title">Acquire [App Name]</h3>
+            <div class="download-links">
+                <h4>Download Instructions</h4>
+                <div class="platform-section">
+                    <h5>Android</h5>
+                    <p>Visit this page in Chrome > Tap ⋮ > "Add to Home screen". Icon appears—tap to launch like native app.</p>
+                    <a href="#" download="app-android.apk">Dummy Android Download (APK)</a>
+                </div>
+                <div class="platform-section">
+                    <h5>iOS</h5>
+                    <p>Open in Safari > Tap Share (↑ arrow) > "Add to Home Screen". Standalone icon ready.</p>
+                    <a href="#" download="app-ios.ipa">Dummy iOS Download (IPA)</a>
+                </div>
+                <div class="platform-section">
+                    <h5>Windows</h5>
+                    <p>In Edge/Chrome > ⋮ > "Install app". Adds to Start menu/desktop.</p>
+                    <a href="#" download="app-windows.exe">Dummy Windows Download (EXE/MSIX)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 The Oracles Emporium. Forged Beyond the Gates of Giants. | <a href="#">Join the Inner Circle</a></p>
+        </div>
+    </footer>
+
+    <script>
+        let currentVideo = null;
+        let currentAudio = null;
+
+        // Enter Emporium: Play Full Screen Video & Background Audio, Scroll on End
+        function enterEmporium() {
+            const media = document.getElementById('hero-media');
+            const video = document.getElementById('emporium-video');
+            const audio = document.getElementById('emporium-audio');
+            
+            // Show hidden media container
+            media.style.display = 'block';
+            
+            // 1. Handle Video (Muted to ensure autoplay)
+            if (video) {
+                video.currentTime = 0;
+                video.muted = true; 
+                video.play();
+                
+                // Enter full screen
+                if (video.requestFullscreen) {
+                    video.requestFullscreen();
+                } else if (video.webkitRequestFullscreen) {
+                    video.webkitRequestFullscreen();
+                } else if (video.msRequestFullscreen) {
+                    video.msRequestFullscreen();
+                }
+                currentVideo = video;
+            }
+            
+            // 2. Handle Audio (Muted to ensure autoplay, then instantly unmuted)
+            if (audio) {
+                audio.currentTime = 0;
+                audio.muted = true; // MUST be muted for initial play() call to succeed
+
+                const playPromise = audio.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        // Playback started successfully (muted)
+                        audio.muted = false;     // CRITICAL STEP: Unmute the audio
+                        audio.volume = 1.0;      // Set volume explicitly
+                        console.log("Audio started successfully and was unmuted. You should hear the music now.");
+                    }).catch(error => {
+                        // Playback failed (e.g., file not found, browser blocked)
+                        console.error("CRITICAL ERROR: Audio playback failed. This often means the simplified path is still wrong, or the file failed to upload.", error);
+                    });
+                }
+                
+                currentAudio = audio;
+            }
+            
+            // 3. Scroll to apps when video ends
+            if (video) {
+                video.onended = () => {
+                    // Explicitly exit fullscreen mode
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) { 
+                        document.webkitExitFullscreen();
+                    } else if (document.msRequestFullscreen) { 
+                        document.msRequestFullscreen();
+                    }
+
+                    // Hide the media container 
+                    media.style.display = 'none';
+                    
+                    // Scroll to the apps section
+                    document.getElementById('apps').scrollIntoView({ behavior: 'smooth' });
+                };
+            }
+        }
+
+        // Show Download Modal (links are placeholders for now)
+        function showDownloads(appId) {
+            const modal = document.getElementById('download-modal');
+            const title = document.getElementById('modal-title');
+            
+            // Pan's Oracle will link to external Vercel deployment
+            const externalLink = "https://YOUR-PANSORACLE-VERCEL-DOMAIN.vercel.app/";
+
+            const appTitle = document.querySelector(`.${appId} .app-title`).textContent;
+            title.textContent = 'Acquire ' + appTitle;
+            
+            // Update links in the modal dynamically
+            const androidLink = modal.querySelector('.platform-section:nth-child(2) a');
+            const iosLink = modal.querySelector('.platform-section:nth-child(3) a');
+            const windowsLink = modal.querySelector('.platform-section:nth-child(4) a');
+
+            if (appId === 'pans-oracle') {
+                androidLink.href = externalLink;
+                androidLink.textContent = "Launch Paywall App";
+                iosLink.href = externalLink;
+                iosLink.textContent = "Launch Paywall App";
+                windowsLink.href = externalLink;
+                windowsLink.textContent = "Launch Paywall App";
+            } else {
+                androidLink.href = '#';
+                androidLink.textContent = "Dummy Android Download (APK)";
+                iosLink.href = '#';
+                iosLink.textContent = "Dummy iOS Download (IPA)";
+                windowsLink.href = '#';
+                windowsLink.textContent = "Dummy Windows Download (EXE/MSIX)";
+            }
+
+            modal.style.display = 'block';
+        }
+
+        // Close Modal
+        function closeDownloads() {
+            document.getElementById('download-modal').style.display = 'none';
+        }
+
+        // Close on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('download-modal');
+            if (event.target == modal) {
+                closeDownloads();
+            }
+        }
+    </script>
+</body>
+</html>
