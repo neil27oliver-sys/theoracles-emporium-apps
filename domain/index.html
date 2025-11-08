@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Oracles Emporium</title>
+    <link rel="icon" type="image/x-icon" href="/assets/monogram.ico">
     <style>
         /* Global Styles */
         body {
@@ -36,7 +37,6 @@
         /* Hero Section - Background with Profile Image */
         .hero {
             height: 100vh;
-            /* PATH NOW SIMPLIFIED: /assets/profile.jpeg (Assuming you moved the file) */
             background-image: url('/assets/profile.png'); 
             background-size: cover;
             background-position: center;
@@ -183,7 +183,6 @@
             object-fit: contain;
             background: #D4AF37;
         }
-        /* NOTE: Assuming image files are ALSO moved directly under /assets */
         .cosmic-weave .app-icon { background: linear-gradient(45deg, #001F3F, #D4AF37); }
         .embers .app-icon { background: linear-gradient(to bottom, #FF4500, #D4AF37); }
         .pans-oracle .app-icon { background: linear-gradient(135deg, #8B4513, #D4AF37); }
@@ -278,9 +277,9 @@
             color: #D4AF37;
             margin-bottom: 5px;
         }
-
-        /* Test Space Section */
-        .test-space {
+        
+        /* 2. NEW SITE PREVIEW SECTION STYLES */
+        .site-preview {
             padding: 40px 0;
             background: rgba(0, 31, 63, 0.8);
             margin: 40px 0;
@@ -288,8 +287,16 @@
             border-radius: 10px;
             text-align: center;
         }
-        .test-space h2 {
+        .site-preview h2 {
             color: #D4AF37;
+        }
+        .site-preview img {
+            max-width: 80%;
+            height: auto;
+            border: 3px solid #D4AF37;
+            border-radius: 5px;
+            margin-top: 20px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
         }
 
         /* Footer */
@@ -316,24 +323,25 @@
             .modal-content { width: 95%; margin: 2% auto; padding: 15px; }
             .platform-section p { font-size: 0.8rem; }
             .crest { width: 150px; height: 150px; top: 10px; left: 10px; }
+            .site-preview img { max-width: 95%; }
         }
     </style>
 </head>
 <body>
     <div id="hero-media" class="hero-media">
         <video id="emporium-video">
-            <source src="/assets/EMPORUIM.mp4" type="video/mp4">
+            <source src="/assets/video/EMPORUIM.mp4" type="video/mp4">
             Your browser doesn't support video. Mystic visions await...
         </video>
         <audio id="emporium-audio">
-    <source src="/assets/music/The Oracles Emporuim.mp3" type="audio/mpeg">
-    Whispers from the emporium...
-</audio>
+            <source src="/assets/music/The Oracles Emporuim.mp3" type="audio/mpeg">
+            Whispers from the emporium...
+        </audio>
     </div>
 
     <section class="hero">
         <div class="hero-top">
-            <img src="/assets/crest.png" alt="The Eternal Tribe Crest" class="crest">
+            <img src="/assets/images/crest.png" alt="The Eternal Tribe Crest" class="crest">
             <h1>The Oracles Emporium</h1>
         </div>
         <div class="hero-bottom">
@@ -347,7 +355,7 @@
             <h2 class="section-title">Featured Oracles</h2>
             <div class="apps-grid">
                 <div class="app-card cosmic-weave">
-                    <img src="/assets/cosmic.png" alt="Cosmic Weave Icon" class="app-icon">
+                    <img src="/assets/images/cosmic.png" alt="Cosmic Weave Icon" class="app-icon">
                     <h3 class="app-title">Cosmic Weave</h3>
                     <div class="app-price">$3</div>
                     <p class="app-description">An application that drags emojis into orbital eye, spits Suno-ready lyrics/styles/titles in seconds. Weave fun, export formatted files, funnel straight to Suno and generate music videos.</p>
@@ -355,7 +363,7 @@
                 </div>
 
                 <div class="app-card embers">
-                    <img src="/assets/embers.png" alt="Embers of Release Icon" class="app-icon">
+                    <img src="/assets/images/embers.png" alt="Embers of Release Icon" class="app-icon">
                     <h3 class="app-title">Embers of Release</h3>
                     <div class="app-price">$3</div>
                     <p class="app-description">A ritual app for surrender: Box breathing, Latin invocations, secure journaling, and alchemical burning animations to release burdens in a sacred digital space.</p>
@@ -363,7 +371,7 @@
                 </div>
 
                 <div class="app-card pans-oracle">
-                    <img src="/assets/pansoracle.png" alt="Pan's Oracle Icon" class="app-icon">
+                    <img src="/assets/images/pansoracle.png" alt="Pan's Oracle Icon" class="app-icon">
                     <h3 class="app-title">Pan's Oracle</h3>
                     <div class="app-price">$3</div>
                     <p class="app-description">Embark on a celestial journey with this whimsical lottery number generator inspired by ancient Greek mythology. Channel Pan and Apollo for mystic numbers and poetic inspiration.</p>
@@ -371,7 +379,7 @@
                 </div>
 
                 <div class="app-card pre-school">
-                    <img src="/assets/preschool.png" alt="Pre School Icon" class="app-icon">
+                    <img src="/assets/images/preschool.png" alt="Pre School Icon" class="app-icon">
                     <h3 class="app-title">Pre School</h3>
                     <div class="app-price">$3</div>
                     <p class="app-description">A fun, offline educational app for 4-7 year olds focusing on family, colors, numbers, and alphabet. Parent-led sessions with emojis, sounds, and progress tracking for community learning.</p>
@@ -379,17 +387,17 @@
                 </div>
 
                 <div class="app-card stinkers">
-                    <img src="/assets/stinkesrbuddy.png" alt="Stinkers Buddy Icon" class="app-icon">
+                    <img src="/assets/images/stinkersbuddy.png" alt="Stinkers Buddy Icon" class="app-icon">
                     <h3 class="app-title">Stinkers Buddy</h3>
-                    <div class="app-price">$6</div>
+                    <div class="app-price">$9</div>
                     <p class="app-description">Demystify credit risk with this open-source tool. Calculate PD and LGD metrics transparently—empower borrowers and lenders with simple, verifiable financial insights.</p>
                     <div class="app-button" onclick="showDownloads('stinkers')">Acquire</div>
                 </div>
 
                 <div class="app-card tesla">
-                    <img src="/assets/teslaoracle.png" alt="Tesla's Trigram Oracle Icon" class="app-icon">
+                    <img src="/assets/images/teslaoracle.png" alt="Tesla's Trigram Oracle Icon" class="app-icon">
                     <h3 class="app-title">Tesla's Trigram Oracle</h3>
-                    <div class="app-price">$9</div>
+                    <div class="app-price">$18</div>
                     <p class="app-description">A powerful guidance tool using Gemini AI to interpret I Ching trigrams through Nikola Tesla's principles. Seek wisdom from ancient hexagrams and electric innovation.</p>
                     <div class="app-button" onclick="showDownloads('tesla')">Acquire</div>
                 </div>
@@ -397,11 +405,11 @@
         </div>
     </section>
 
-    <section class="test-space">
+    <section class="site-preview">
         <div class="container">
-            <h2>Test Realm: Drop Files Here</h2>
-            <p>Upload test files (e.g., PDFs, MP3s) for previews. Porting Kindle/SoundCloud soon...</p>
-            <iframe src="/test-file.pdf" width="400" height="300" style="border: 1px solid #D4AF37; margin: 10px;"></iframe>
+            <h2>Portal Snapshot</h2>
+            <p>A glimpse into the emporium's hidden architecture.</p>
+            <img src="/assets/site.png" alt="Site Map Preview">
         </div>
     </section>
 
@@ -414,17 +422,17 @@
                 <div class="platform-section">
                     <h5>Android</h5>
                     <p>Visit this page in Chrome > Tap ⋮ > "Add to Home screen". Icon appears—tap to launch like native app.</p>
-                    <a href="#" download="app-android.apk">Dummy Android Download (APK)</a>
+                    <a href="#" id="android-link" download="app-android.apk">Dummy Android Download (APK)</a>
                 </div>
                 <div class="platform-section">
                     <h5>iOS</h5>
                     <p>Open in Safari > Tap Share (↑ arrow) > "Add to Home Screen". Standalone icon ready.</p>
-                    <a href="#" download="app-ios.ipa">Dummy iOS Download (IPA)</a>
+                    <a href="#" id="ios-link" download="app-ios.ipa">Dummy iOS Download (IPA)</a>
                 </div>
                 <div class="platform-section">
-                    <h5>Windows</h5>
-                    <p>In Edge/Chrome > ⋮ > "Install app". Adds to Start menu/desktop.</p>
-                    <a href="#" download="app-windows.exe">Dummy Windows Download (EXE/MSIX)</a>
+                    <h5>Web App / Windows</h5>
+                    <p>In Edge/Chrome > ⋮ > "Install app" for PWA access, or download the Windows file.</p>
+                    <a href="#" id="windows-link" download="app-windows.exe">Dummy Web App / Windows Download</a>
                 </div>
             </div>
         </div>
@@ -449,7 +457,7 @@
             // Show hidden media container
             media.style.display = 'block';
             
-            // 1. Handle Video (Muted to ensure autoplay)
+            // 1. Handle Video
             if (video) {
                 video.currentTime = 0;
                 video.muted = true; 
@@ -466,7 +474,7 @@
                 currentVideo = video;
             }
             
-            // 2. Handle Audio (Muted to ensure autoplay, then instantly unmuted)
+            // 2. Handle Audio (Aggressive Playback - now working!)
             if (audio) {
                 audio.currentTime = 0;
                 audio.muted = true; // MUST be muted for initial play() call to succeed
@@ -476,8 +484,8 @@
                 if (playPromise !== undefined) {
                     playPromise.then(_ => {
                         // Playback started successfully (muted)
-                        audio.muted = false;     // CRITICAL STEP: Unmute the audio
-                        audio.volume = 1.0;      // Set volume explicitly
+                        audio.muted = false;     // CRITICAL STEP: Unmute the audio
+                        audio.volume = 1.0;      // Set volume explicitly
                         console.log("Audio started successfully and was unmuted. You should hear the music now.");
                     }).catch(error => {
                         // Playback failed (e.g., file not found, browser blocked)
@@ -491,7 +499,7 @@
             // 3. Scroll to apps when video ends
             if (video) {
                 video.onended = () => {
-                    // Explicitly exit fullscreen mode
+                    // Exit fullscreen mode
                     if (document.exitFullscreen) {
                         document.exitFullscreen();
                     } else if (document.webkitExitFullscreen) { 
@@ -509,36 +517,48 @@
             }
         }
 
-        // Show Download Modal (links are placeholders for now)
+        // Show Download Modal
         function showDownloads(appId) {
             const modal = document.getElementById('download-modal');
             const title = document.getElementById('modal-title');
             
-            // Pan's Oracle will link to external Vercel deployment
-            const externalLink = "https://YOUR-PANSORACLE-VERCEL-DOMAIN.vercel.app/";
+            // 3. PANS ORACLE SPECIFIC LINKS
+            const PANS_ORACLE_PWA = "https://YOUR-PANSORACLE-VERCEL-DOMAIN.vercel.app/"; 
+            const PANS_ORACLE_ANDROID_APK = "https://pansoracle-android-download-link.com/";
+            const PANS_ORACLE_WINDOWS = "https://pansoracle-windows-download-link.com/"; // Use a specific Windows installer link if available
 
             const appTitle = document.querySelector(`.${appId} .app-title`).textContent;
             title.textContent = 'Acquire ' + appTitle;
             
-            // Update links in the modal dynamically
-            const androidLink = modal.querySelector('.platform-section:nth-child(2) a');
-            const iosLink = modal.querySelector('.platform-section:nth-child(3) a');
-            const windowsLink = modal.querySelector('.platform-section:nth-child(4) a');
+            // Get links by ID for easier manipulation
+            const androidLink = document.getElementById('android-link');
+            const iosLink = document.getElementById('ios-link');
+            const windowsLink = document.getElementById('windows-link');
 
             if (appId === 'pans-oracle') {
-                androidLink.href = externalLink;
-                androidLink.textContent = "Launch Paywall App";
-                iosLink.href = externalLink;
-                iosLink.textContent = "Launch Paywall App";
-                windowsLink.href = externalLink;
-                windowsLink.textContent = "Launch Paywall App";
+                // For PWA/Web apps, we direct all mobile installs to the PWA link, 
+                // and the PWA instructions in the <p> tag handle the rest.
+                androidLink.href = PANS_ORACLE_PWA; 
+                androidLink.textContent = "Launch Web/PWA App";
+
+                iosLink.href = PANS_ORACLE_PWA; 
+                iosLink.textContent = "Launch Web/PWA App";
+
+                windowsLink.href = PANS_ORACLE_PWA; // Assuming Windows users also use the PWA first
+                windowsLink.textContent = "Launch Web/PWA App";
+                
+                // If you later offer a separate Android APK or Windows EXE, you can switch the links here.
+                // Example: androidLink.href = PANS_ORACLE_ANDROID_APK;
+                // windowsLink.href = PANS_ORACLE_WINDOWS;
+                
             } else {
+                // Placeholder links for other apps
                 androidLink.href = '#';
                 androidLink.textContent = "Dummy Android Download (APK)";
                 iosLink.href = '#';
                 iosLink.textContent = "Dummy iOS Download (IPA)";
                 windowsLink.href = '#';
-                windowsLink.textContent = "Dummy Windows Download (EXE/MSIX)";
+                windowsLink.textContent = "Dummy Web App / Windows Download";
             }
 
             modal.style.display = 'block';
