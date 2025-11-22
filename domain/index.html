@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Oracles Emporium</title>
+    <link rel="icon" type="image/x-icon" href="/assets/monogram.ico">
+    
+   <script src="https://www.paypal.com/sdk/js?client-id=AWMjw-JB6E8nFkjToPpNNJkpPk9lxnp1I8IF13-djVLcOQ2daRj2k8tCM4jEHkjm_C8mPpnyO1Wj_rF4&currency=USD"></script>
+
+    <style>
+        body{margin:0;padding:0;font-family:'Helvetica Neue',Arial,sans-serif;background:#001F3F;color:#FFFFF0;line-height:1.6;overflow-x:hidden;}
+        h1,h2,h3{font-family:Garamond,serif;color:#D4AF37;}
+        a{color:#D4AF37;text-decoration:none;}
+        a:hover{color:#FFFFF0;}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px;}
+        .hero{height:100vh;background:url('/assets/profile.png') center/cover fixed;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;position:relative;padding:2rem 0;}
+        .hero::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,31,63,0.4);}
+        .hero-top,.hero-bottom{position:relative;z-index:1;}
+        .hero-top h1{font-size:4rem;margin:0;text-shadow:2px 2px 8px #000;}
+        .crest{position:absolute;top:20px;left:20px;width:250px;height:250px;border:2px solid #D4AF37;border-radius:10px;box-shadow:0 4px 12px rgba(212,175,55,0.3);z-index:10;}
+        .hero p{font-size:1.5rem;text-shadow:1px 1px 4px #000;}
+        .cta-triangle{background:#D4AF37;color:#001F3F;padding:2rem;border-radius:50%;font-size:2.5rem;font-weight:bold;cursor:pointer;transition:all .3s;}
+        .cta-triangle:hover{background:#FFFFF0;transform:scale(1.1);}
+        .hero-media{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:10;background:#000;}
+        .hero-media video{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:100%;min-height:100%;object-fit:cover;}
+        .apps-section{padding:60px 0;background:linear-gradient(#001F3F,#000);}
+        .section-title{text-align:center;font-size:3rem;margin-bottom:3rem;}
+        .apps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;}
+        .app-card{background:rgba(0,31,63,0.9);border:2px solid #D4AF37;border-radius:12px;padding:2rem;text-align:center;transition:all .3s;cursor:pointer;}
+        .app-card:hover{transform:translateY(-8px);box-shadow:0 12px 30px rgba(212,175,55,0.4);}
+        .app-icon{width:100px;height:100px;margin:0 auto 1rem;border-radius:50%;object-fit:contain;background:#D4AF37;}
+        .cosmic-weave .app-icon{background:linear-gradient(45deg,#001F3F,#D4AF37);}
+        .embers .app-icon{background:linear-gradient(to bottom,#FF4500,#D4AF37);}
+        .pans-oracle .app-icon{background:linear-gradient(135deg,#8B4513,#D4AF37);}
+        .pre-school .app-icon{background:linear-gradient(45deg,#FFD700,#D4AF37);}
+        .stinkers .app-icon{background:linear-gradient(to right,#228B22,#D4AF37);}
+        .tesla .app-icon{background:linear-gradient(90deg,#001F3F,#D4AF37);}
+        .app-title{font-size:1.8rem;margin:0.5rem 0;}
+        .app-price{font-size:1.3rem;color:#D4AF37;font-weight:bold;}
+        .app-description{font-size:0.95rem;opacity:0.9;margin:1rem 0;}
+        .app-button{background:transparent;border:2px solid #D4AF37;color:#D4AF37;padding:0.8rem 1.8rem;border-radius:8px;font-weight:bold;transition:all .3s;white-space:nowrap;}
+        .app-button:hover{background:#D4AF37;color:#001F3F;}
+        .site-preview{padding:60px 20px;background:rgba(0,31,63,0.8);border:2px solid #D4AF37;border-radius:12px;margin:60px auto;max-width:1000px;text-align:center;}
+        .site-preview img{max-width:48%;height:auto;border:3px solid #D4AF37;border-radius:8px;box-shadow:0 0 25px rgba(212,175,55,0.5);}
+        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,31,63,0.92);backdrop-filter:blur(12px);z-index:1000;align-items:center;justify-content:center;}
+        .modal-content{background:rgba(0,20,40,0.98);border:3px solid #D4AF37;border-radius:16px;padding:50px 30px;width:90%;max-width:640px;box-shadow:0 0 50px rgba(212,175,55,0.7);}
+        .close{position:absolute;top:15px;right:20px;font-size:38px;color:#D4AF37;cursor:pointer;}
+        .close:hover{color:#FFFFF0;}
+        #download-title{font-size:2.4rem;margin:15px 0 30px;color:#D4AF37;font-weight:bold;text-align:center;text-shadow:0 0 15px rgba(212,175,55,0.6);}
+        .launch-text{font-size:1.4rem;line-height:2.2;text-align:center;color:#FFFFF0;}
+        .launch-text strong{color:#D4AF37;}
+        .pwa-btn{display:block;margin:40px auto 0;padding:22px 60px;background:#D4AF37;color:#001F3F;border-radius:14px;font-size:2rem;font-weight:bold;text-decoration:none;box-shadow:0 10px 30px rgba(212,175,55,0.7);transition:.4s;}
+        .pwa-btn:hover{background:#FFFFF0;transform:scale(1.05);}
+        .already-owned{opacity:0.6;}
+        #paywall-total{font-size:2rem;font-weight:bold;color:#D4AF37;margin:20px 0;}
+        #paypal-button-container{min-height:80px;margin:20px 0;text-align:center;}
+        .footer{background:#000;padding:2rem;text-align:center;border-top:1px solid #D4AF37;}
+        #bypass-button{background:#FF0000;color:#FFFFF0;padding:5px 10px;border:2px solid #FFFFF0;border-radius:5px;cursor:pointer;font-size:0.8rem;margin-top:10px;}
+        @media (max-width:768px){.hero-top h1{font-size:2.8rem;}.crest{width:150px;height:150px;top:10px;left:10px;}.pwa-btn{font-size:1.6rem;padding:18px 40px;}}
+    </style>
+</head>
+<body>
+
+    <div id="hero-media" class="hero-media">
+        <video id="emporium-video" playsinline><source src="/assets/video/EMPORUIM.mp4" type="video/mp4"></video>
+        <audio id="emporium-audio"><source src="/assets/music/The Oracles Emporuim.mp3" type="audio/mpeg"></audio>
+    </div>
+
+    <section class="hero">
+        <img src="/assets/images/crest.png" alt="The Eternal Tribe Crest" class="crest">
+        <div class="hero-top"><h1>The Oracles Emporium</h1></div>
+        <div class="hero-bottom">
+            <p>Unlock the Unseen: Exclusive Realms Await</p>
+            <div class="cta-triangle" onclick="enterEmporium()">△</div>
+        </div>
+    </section>
+
+    <section id="apps" class="apps-section">
+        <div class="container">
+            <h2 class="section-title">Featured Oracles</h2>
+            <div class="apps-grid">
+                <div class="app-card cosmic-weave" onclick="acquire('cosmic-weave')">
+                    <img src="/assets/images/cosmic.png" class="app-icon">
+                    <h3 class="app-title">Cosmic Weave</h3>
+                    <div class="app-price">$3</div>
+                    <p class="app-description">An application that drags emojis into orbital eye, spits Suno-ready lyrics/styles/titles in seconds. Weave fun, export formatted files, funnel straight to Suno and generate music videos.</p>
+                    <div class="app-button">Acquire</div>
+                </div>
+                <div class="app-card embers" onclick="acquire('embers')">
+                    <img src="/assets/images/embers.png" class="app-icon">
+                    <h3 class="app-title">Embers of Release</h3>
+                    <div class="app-price">$3</div>
+                    <p class="app-description">A ritual app for surrender: Box breathing, Latin invocations, secure journaling, and alchemical burning animations to release burdens in a sacred digital space.</p>
+                    <div class="app-button">Acquire</div>
+                </div>
+                <div class="app-card pans-oracle" onclick="acquire('pans-oracle')">
+                    <img src="/assets/images/pansoracle.png" class="app-icon">
+                    <h3 class="app-title">Pan's Oracle</h3>
+                    <div class="app-price">$3</div>
+                    <p class="app-description">Embark on a celestial journey with this whimsical lottery number generator inspired by ancient Greek mythology. Channel Pan and Apollo for mystic numbers and poetic inspiration.</p>
+                    <div class="app-button">Acquire</div>
+                </div>
+                <div class="app-card pre-school" onclick="acquire('pre-school')">
+                    <img src="/assets/images/preschool.png" class="app-icon">
+                    <h3 class="app-title">Pre School</h3>
+                    <div class="app-price">$3</div>
+                    <p class="app-description">A fun, offline educational app for 4-7 year olds focusing on family, colors, numbers, and alphabet. Parent-led sessions with emojis, sounds, and progress tracking for community learning.</p>
+                    <div class="app-button">Acquire</div>
+                </div>
+                <div class="app-card stinkers" onclick="acquire('stinkers')">
+                    <img src="/assets/images/stinkesrbuddy.png" class="app-icon">
+                    <h3 class="app-title">Stinkers Buddy</h3>
+                    <div class="app-price">$3</div>
+                    <p class="app-description">Windows-only (new streamlined model not suitable for Android/iOS — too many moving parts). Demystify credit risk with transparent PD/LGD calculations.</p>
+                    <div class="app-button">Acquire (Windows/Mac Only)</div>
+                </div>
+                <div class="app-card tesla" onclick="acquire('tesla')">
+                    <img src="/assets/images/teslaoracle.png" class="app-icon">
+                    <h3 class="app-title">Tesla's Trigram Oracle</h3>
+                    <div class="app-price">$6</div>
+                    <p class="app-description">A powerful guidance tool using GROK AI to interpret I Ching trigrams through Nikola Tesla's principles. Seek wisdom from ancient hexagrams and electric innovation.</p>
+                    <div class="app-button">Acquire</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="site-preview container">
+        <h2>Portal Snapshot</h2>
+        <img src="/assets/site.png" alt="Site Preview">
+    </section>
+
+    <!-- ENHANCED LAUNCH MODAL – NO TWEET BANNERS ANYWHERE -->
+    <div id="download-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('download-modal')">&times;</span>
+            <h3 id="download-title"></h3>
+            <div class="launch-text">
+                <strong>This is a Progressive Web App – NOT an app-store app</strong><br><br>
+                Installs instantly • Works offline • No App Store • Yours forever on this device<br><br>
+                <strong>Install in 3 seconds:</strong><br>
+                Chrome/Edge → ⋮ → “Install app”<br>
+                Safari → Share → “Add to Home Screen”
+            </div>
+            <a id="pwa-link" href="#" target="_blank" class="pwa-btn">→ LAUNCH / INSTALL NOW ←</a>
+        </div>
+    </div>
+
+    <div id="paywall-modal" class="modal"><div class="modal-content">
+        <span class="close" onclick="closeModal('paywall-modal')">&times;</span>
+        <h2>Select Realms to Unlock</h2>
+        <p>Yours forever on this device after purchase.</p>
+        <div id="paywall-apps" style="margin:20px 0;"></div>
+        <div id="paywall-total">$0.00</div>
+        <div id="paypal-button-container"></div>
+    </div></div>
+
+    <footer class="footer">
+        <div class="container">
+            <button id="bypass-button" onclick="bypassPaywall()">TESTING: Bypass Paywall (Unlock All)</button>
+            <p>© 2025 The Oracles Emporium • Forged Beyond the Gates of Giants</p>
+        </div>
+    </footer>
+
+<script>
+// YOUR ORIGINAL SCRIPT – ZERO CHANGES EXCEPT THE MODAL TEXT ABOVE
+const apps = {
+    "cosmic-weave": {name: "Cosmic Weave", price: 3, url: "https://cosmic-weave.vercel.app/"},
+    "embers":        {name: "Embers of Release", price: 3, url: "https://embers-kappa.vercel.app/"},
+    "pans-oracle":  {name: "Pan's Oracle", price: 3, url: "https://pansoracle.vercel.app/"},
+    "pre-school":   {name: "Pre School", price: 3, url: "https://pre-school-eta.vercel.app/"},
+    "stinkers":     {name: "Stinkers Buddy", price: 3, url: "https://stinkersbuddy.vercel.app/"},
+    "tesla":        {name: "Tesla's Trigram Oracle", price: 6, url: "https://tesla-chi-blue.vercel.app/"}
+};
+
+let owned = [];
+const stored = localStorage.getItem("oraclesOwned_v2");
+if (stored) owned = JSON.parse(stored);
+function saveOwnership() { localStorage.setItem("oraclesOwned_v2", JSON.stringify(owned)); }
+
+function acquire(id) {
+    if (owned.includes(id)) { showDownload(id); return; }
+    showPaywall(id);
+}
+
+function showDownload(id) {
+    document.getElementById("download-title").textContent = `✓ ${apps[id].name} — Unlocked Forever!`;
+    document.getElementById("pwa-link").href = apps[id].url;
+    document.getElementById("download-modal").style.display = "flex";
+}
+
+// everything else below is 100 % your original working code
+function calculateTotal() {
+    let total = 0;
+    const checkboxes = document.querySelectorAll('#paywall-apps input[type="checkbox"]:checked');
+    checkboxes.forEach(checkbox => {
+        total += parseFloat(checkbox.getAttribute('data-price'));
+    });
+    document.getElementById("paywall-total").textContent = "$" + total.toFixed(2);
+    return total;
+}
+
+function renderPaypalButton(total) {
+    const container = document.getElementById('paypal-button-container');
+    container.innerHTML = ''; 
+    
+    if (total > 0 && typeof paypal !== 'undefined') {
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: total.toFixed(2),
+                            currency_code: 'USD'
+                        }
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    const purchasedApps = [];
+                    const checkboxes = document.querySelectorAll('#paywall-apps input[type="checkbox"]:checked');
+                    checkboxes.forEach(checkbox => {
+                        const id = checkbox.getAttribute('data-id');
+                        if (!owned.includes(id)) {
+                            owned.push(id);
+                            purchasedApps.push(apps[id].name);
+                        }
+                    });
+                    
+                    saveOwnership();
+                    closeModal('paywall-modal');
+                    
+                    alert(`Payment successful! You've unlocked: ${purchasedApps.join(', ')}. You can now 'Acquire' them and launch/install.`);
+                });
+            },
+            onError: function(err) {
+                console.error(err);
+                alert("An error occurred during payment. Please try again.");
+            }
+        }).render('#paypal-button-container');
+    } else {
+        container.innerHTML = '<p style="color:#D4AF37;">Select at least one app to purchase.</p>';
+    }
+}
+
+function updatePaywall() {
+    const total = calculateTotal();
+    renderPaypalButton(total);
+}
+
+function showPaywall(preselect = null) {
+    const container = document.getElementById("paywall-apps");
+    container.innerHTML = "";
+    
+    Object.entries(apps).forEach(([id, app]) => {
+        if (owned.includes(id)) {
+            container.innerHTML += `<p class="already-owned">✓ ${app.name} — Already Unlocked</p>`;
+        } else {
+            const checked = (id === preselect) ? "checked" : "";
+            container.innerHTML += `
+                <label style="display:block;margin:15px 0;font-size:1.2rem;">
+                    <input type="checkbox" data-id="${id}" data-price="${app.price}" onchange="updatePaywall()" ${checked}> ${app.name} — $${app.price}
+                </label>`;
+        }
+    });
+    
+    updatePaywall(); 
+    document.getElementById("paywall-modal").style.display = "flex";
+}
+
+function closeModal(id) { document.getElementById(id).style.display = "none"; }
+
+function enterEmporium() {
+    const media = document.getElementById("hero-media");
+    const video = document.getElementById("emporium-video");
+    const audio = document.getElementById("emporium-audio");
+    media.style.display = "block";
+    video.play();
+    audio.play();
+    video.onended = () => {
+        media.style.display = "none";
+        document.getElementById("apps").scrollIntoView({behavior:"smooth"});
+    };
+}
+
+function bypassPaywall() {
+    owned = Object.keys(apps);
+    saveOwnership();
+    alert("TESTING MODE: All Oracles are now unlocked on this device! Refreshing page...");
+    window.location.reload(); 
+}
+
+window.onclick = e => { if (e.target.classList.contains("modal")) e.target.style.display = "none"; };
+</script>
+</body>
+</html>
