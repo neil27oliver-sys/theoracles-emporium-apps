@@ -6,7 +6,7 @@
     <title>The Oracles Emporium</title>
     <link rel="icon" type="image/x-icon" href="/assets/monogram.ico">
     
-   <script src="https://www.paypal.com/sdk/js?client-id=AWMjw-JB6E8nFkjToPpNNJkpPk9lxnp1I8IF13-djVLcOQ2daRj2k8tCM4jEHkjm_C8mPpnyO1Wj_rF4&currency=USD"></script>
+   <script src="https://www.paypal.com/sdk/js?client-id=AWMjw-JB6E8nFkjToPpNNJkpPk9lxnp1I8IF13-djVLcOQ2daRj2k8tCM4jEHkjm_C8mPpnyO1Wj_rF4&currency=USD&buyer-country=ZA"></script>
 
     <style>
         body{margin:0;padding:0;font-family:'Helvetica Neue',Arial,sans-serif;background:#001F3F;color:#FFFFF0;line-height:1.6;overflow-x:hidden;}
@@ -43,8 +43,17 @@
         .app-button:hover{background:#D4AF37;color:#001F3F;}
         .site-preview{padding:60px 20px;background:rgba(0,31,63,0.8);border:2px solid #D4AF37;border-radius:12px;margin:60px auto;max-width:1000px;text-align:center;}
         .site-preview img{max-width:48%;height:auto;border:3px solid #D4AF37;border-radius:8px;box-shadow:0 0 25px rgba(212,175,55,0.5);}
+        
+        /* CORRECTED MODAL STYLES FOR PAYWALL AND DOWNLOAD MODALS (Including scroll fix) */
         .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,31,63,0.92);backdrop-filter:blur(12px);z-index:1000;align-items:center;justify-content:center;}
-        .modal-content{background:rgba(0,20,40,0.98);border:3px solid #D4AF37;border-radius:16px;padding:50px 30px;width:90%;max-width:640px;box-shadow:0 0 50px rgba(212,175,55,0.7);}
+        .modal-content{
+            background:rgba(0,20,40,0.98);border:3px solid #D4AF37;border-radius:16px;
+            padding:50px 30px;width:90%;max-width:640px;box-shadow:0 0 50px rgba(212,175,55,0.7);
+            max-height: 95vh; /* Prevents main page scroll */
+            overflow-y: auto; /* Allows content scroll if needed */
+        }
+        #paywall-modal .modal-content { max-width: 95vw; } /* Ensures width for PayPal frame */
+
         .close{position:absolute;top:15px;right:20px;font-size:38px;color:#D4AF37;cursor:pointer;}
         .close:hover{color:#FFFFF0;}
         #download-title{font-size:2.4rem;margin:15px 0 30px;color:#D4AF37;font-weight:bold;text-align:center;text-shadow:0 0 15px rgba(212,175,55,0.6);}
@@ -56,7 +65,6 @@
         #paywall-total{font-size:2rem;font-weight:bold;color:#D4AF37;margin:20px 0;}
         #paypal-button-container{min-height:80px;margin:20px 0;text-align:center;}
         .footer{background:#000;padding:2rem;text-align:center;border-top:1px solid #D4AF37;}
-        #bypass-button{background:#FF0000;color:#FFFFF0;padding:5px 10px;border:2px solid #FFFFF0;border-radius:5px;cursor:pointer;font-size:0.8rem;margin-top:10px;}
         @media (max-width:768px){.hero-top h1{font-size:2.8rem;}.crest{width:150px;height:150px;top:10px;left:10px;}.pwa-btn{font-size:1.6rem;padding:18px 40px;}}
     </style>
 </head>
@@ -131,7 +139,6 @@
         <img src="/assets/site.png" alt="Site Preview">
     </section>
 
-    <!-- ENHANCED LAUNCH MODAL – NO TWEET BANNERS ANYWHERE -->
     <div id="download-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('download-modal')">&times;</span>
@@ -139,9 +146,6 @@
             <div class="launch-text">
                 <strong>This is a Progressive Web App – NOT an app-store app</strong><br><br>
                 Installs instantly • Works offline • No App Store • Yours forever on this device<br><br>
-                <strong>Install in 3 seconds:</strong><br>
-                Chrome/Edge → ⋮ → “Install app”<br>
-                Safari → Share → “Add to Home Screen”
             </div>
             <a id="pwa-link" href="#" target="_blank" class="pwa-btn">→ LAUNCH / INSTALL NOW ←</a>
         </div>
@@ -158,13 +162,11 @@
 
     <footer class="footer">
         <div class="container">
-            <button id="bypass-button" onclick="bypassPaywall()">TESTING: Bypass Paywall (Unlock All)</button>
             <p>© 2025 The Oracles Emporium • Forged Beyond the Gates of Giants</p>
         </div>
     </footer>
 
 <script>
-// YOUR ORIGINAL SCRIPT – ZERO CHANGES EXCEPT THE MODAL TEXT ABOVE
 const apps = {
     "cosmic-weave": {name: "Cosmic Weave", price: 3, url: "https://cosmic-weave.vercel.app/"},
     "embers":        {name: "Embers of Release", price: 3, url: "https://embers-kappa.vercel.app/"},
@@ -190,7 +192,6 @@ function showDownload(id) {
     document.getElementById("download-modal").style.display = "flex";
 }
 
-// everything else below is 100 % your original working code
 function calculateTotal() {
     let total = 0;
     const checkboxes = document.querySelectorAll('#paywall-apps input[type="checkbox"]:checked');
@@ -201,10 +202,12 @@ function calculateTotal() {
     return total;
 }
 
+// ⚡️ FINAL FIX: Only render the buttons if the PayPal SDK is fully loaded.
 function renderPaypalButton(total) {
     const container = document.getElementById('paypal-button-container');
     container.innerHTML = ''; 
     
+    // Check if the PayPal object exists before trying to render
     if (total > 0 && typeof paypal !== 'undefined') {
         paypal.Buttons({
             createOrder: function(data, actions) {
@@ -240,7 +243,11 @@ function renderPaypalButton(total) {
                 alert("An error occurred during payment. Please try again.");
             }
         }).render('#paypal-button-container');
+    } else if (total > 0) {
+        // If total is > 0 but PayPal isn't loaded yet (only happens briefly)
+        container.innerHTML = '<p style="color:#D4AF37;">Loading payment options...</p>';
     } else {
+        // If total is 0
         container.innerHTML = '<p style="color:#D4AF37;">Select at least one app to purchase.</p>';
     }
 }
@@ -285,15 +292,9 @@ function enterEmporium() {
     };
 }
 
-function bypassPaywall() {
-    owned = Object.keys(apps);
-    saveOwnership();
-    alert("TESTING MODE: All Oracles are now unlocked on this device! Refreshing page...");
-    window.location.reload(); 
-}
-
 window.onclick = e => { if (e.target.classList.contains("modal")) e.target.style.display = "none"; };
 </script>
 </body>
 </html>
+
 
