@@ -220,7 +220,7 @@ function acquire(id) {
     const app = apps[id];
     
     // Static payment URL constructed (using lc=ZA to fix the region/ZIP issue)
-    const url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${panapollo369@gmail.com}&item_name=${encodeURIComponent(app.name)}&amount=${app.price.toFixed(2)}&currency_code=USD&no_shipping=1&lc=ZA&return=https://theoraclesemporium.com/?paid=${id}`;
+    const url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${PAYPAL_BUSINESS_EMAIL}&item_name=${encodeURIComponent(app.name)}&amount=${app.price.toFixed(2)}&currency_code=USD&no_shipping=1&lc=ZA&return=https://theoraclesemporium.com/?paid=${id}`;
     
     // This executes the payment "button" by redirecting the browser
     window.location.href = url;
@@ -247,6 +247,7 @@ window.onclick = e => { if (e.target.classList.contains("modal")) e.target.style
 </script>
 </body>
 </html>
+
 
 
 
