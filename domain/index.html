@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Oracles Emporium</title>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -126,7 +127,7 @@
     <div id="download-modal" class="modal">
         <div class="max-w-2xl w-full bg-gradient-to-b from-gray-900 to-black rounded-3xl shadow-2xl border border-amber-800 p-10 text-center relative">
             <span class="close" onclick="closeModal('download-modal')">&times;</span>
-            <h1 class="text-5xl md:text-6xl font-black text-amber-400 glow mb-8">Unlocked Forever!</h1>
+            <h1 class="text-5xl md:text-6xl font-black text-amber-400 glow mb-8">Launch / Install PWA</h1>
             <p class="text-xl text-amber-200 mb-8">This is a Progressive Web App — NOT an app-store app</p>
             <div class="grid md:grid-cols-2 gap-8 mb-12 text-lg">
                 <div class="bg-gray-900/70 p-6 rounded-xl border border-amber-900">
@@ -187,9 +188,6 @@
     </footer>
 
 <script>
-// ✅ YOUR PAYPAL EMAIL IS NOW CORRECTLY SET HERE
-const PAYPAL_BUSINESS_EMAIL = "panapollo369@gmail.com"; 
-
 const apps = {
     "cosmic-weave": {name: "Cosmic Weave", price: 3.00, url: "https://cosmic-weave.vercel.app/"},
     "embers":        {name: "Embers of Release", price: 3.00, url: "https://embers-kappa.vercel.app/"},
@@ -199,34 +197,10 @@ const apps = {
     "tesla":        {name: "Tesla's Trigram Oracle", price: 3.00, url: "https://tesla-chi-blue.vercel.app/"}
 };
 
-let owned = [];
-const stored = localStorage.getItem("oraclesOwned_v2");
-if (stored) owned = JSON.parse(stored);
-function saveOwnership() { localStorage.setItem("oraclesOwned_v2", JSON.stringify(owned)); }
-
-// The new, simple "button" logic: redirect to PayPal using a static URL
+// SIMPLIFIED ACQUIRE FUNCTION: Now immediately shows the download modal.
 function acquire(id) {
-    if (owned.includes(id)) { 
-        showDownload(id); 
-        return; 
-    }
-    
-    // ✅ CRITICAL FIX: The check is now against the placeholder text. 
-    // Since your email is correct, this check fails, and the script proceeds.
-    if (!PAYPAL_BUSINESS_EMAIL || PAYPAL_BUSINESS_EMAIL === "YOUR_PAYPAL_BUSINESS_EMAIL_HERE") {
-        alert("Configuration Error: Please update the PAYPAL_BUSINESS_EMAIL variable in the index.html script.");
-        return;
-    }
-
-    const app = apps[id];
-    
-    // Static payment URL constructed (This line is 100% correct)
-    const url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${PAYPAL_BUSINESS_EMAIL}&item_name=${encodeURIComponent(app.name)}&amount=${app.price.toFixed(2)}&currency_code=USD&no_shipping=1&lc=ZA&return=https://theoraclesemporium.com/?paid=${id}`;
-    
-    // This executes the payment "button" by redirecting the browser
-    window.location.href = url;
+    showDownload(id); 
 }
-
 
 function showDownload(id) {
     document.getElementById("pwa-link").href = apps[id].url;
@@ -248,6 +222,7 @@ window.onclick = e => { if (e.target.classList.contains("modal")) e.target.style
 </script>
 </body>
 </html>
+
 
 
 
