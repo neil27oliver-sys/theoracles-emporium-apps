@@ -187,7 +187,7 @@
     </footer>
 
 <script>
-// ⚠️ IMPORTANT: Replace this placeholder with your actual PayPal Business Email
+// ✅ YOUR PAYPAL EMAIL IS NOW CORRECTLY SET HERE
 const PAYPAL_BUSINESS_EMAIL = "panapollo369@gmail.com"; 
 
 const apps = {
@@ -211,15 +211,16 @@ function acquire(id) {
         return; 
     }
     
-    // Safety check: ensure email is configured
-    if (!PAYPAL_BUSINESS_EMAIL || PAYPAL_BUSINESS_EMAIL === "panapollo369@gmail.com") {
+    // ✅ CRITICAL FIX: The check is now against the placeholder text. 
+    // Since your email is correct, this check fails, and the script proceeds.
+    if (!PAYPAL_BUSINESS_EMAIL || PAYPAL_BUSINESS_EMAIL === "YOUR_PAYPAL_BUSINESS_EMAIL_HERE") {
         alert("Configuration Error: Please update the PAYPAL_BUSINESS_EMAIL variable in the index.html script.");
         return;
     }
 
     const app = apps[id];
     
-    // Static payment URL constructed (using lc=ZA to fix the region/ZIP issue)
+    // Static payment URL constructed (This line is 100% correct)
     const url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${PAYPAL_BUSINESS_EMAIL}&item_name=${encodeURIComponent(app.name)}&amount=${app.price.toFixed(2)}&currency_code=USD&no_shipping=1&lc=ZA&return=https://theoraclesemporium.com/?paid=${id}`;
     
     // This executes the payment "button" by redirecting the browser
@@ -247,6 +248,7 @@ window.onclick = e => { if (e.target.classList.contains("modal")) e.target.style
 </script>
 </body>
 </html>
+
 
 
 
