@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Oracles Emporium</title>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
-    <script src="https://www.paypal.com/sdk/js?client-id=AWMjw-JB6E8nFkjToPpNNJkpPk9lxnp1I8IF13-djVLcOQ2daRj2k8tCM4jEHkjm_C8mPpnyO1Wj_rF4&currency=USD&locale=automatic"></script> <<< FIX APPLIED HERE
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -181,17 +180,6 @@
         </div>
     </div>
 
-    <div id="paywall-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('paywall-modal')">&times;</span>
-            <h2 class="text-center text-4xl glow mb-4">Select Realms to Unlock</h2>
-            <p class="text-center mb-6">Yours forever on this device after purchase.</p>
-            <div id="paywall-apps" class="my-8"></div>
-            <div id="paywall-total" class="text-center text-3xl font-bold my-6">$0.00</div>
-            <div id="paypal-button-container" class="min-h-32"></div>
-        </div>
-    </div>
-
     <footer class="footer">
         <div class="container">
             <p>© 2025 The Oracles Emporium • Forged Beyond the Gates of Giants</p>
@@ -199,13 +187,16 @@
     </footer>
 
 <script>
+// ⚠️ IMPORTANT: Replace this placeholder with your actual PayPal Business Email
+const PAYPAL_BUSINESS_EMAIL = "panapollo369@gmail.com"; 
+
 const apps = {
-    "cosmic-weave": {name: "Cosmic Weave", price: 3, url: "https://cosmic-weave.vercel.app/"},
-    "embers":        {name: "Embers of Release", price: 3, url: "https://embers-kappa.vercel.app/"},
-    "pans-oracle":  {name: "Pan's Oracle", price: 3, url: "https://pansoracle.vercel.app/"},
-    "pre-school":   {name: "Pre School", price: 3, url: "https://pre-school-eta.vercel.app/"},
-    "stinkers":     {name: "Stinkers Buddy", price: 3, url: "https://stinkersbuddy.vercel.app/"},
-    "tesla":        {name: "Tesla's Trigram Oracle", price: 3, url: "https://tesla-chi-blue.vercel.app/"}
+    "cosmic-weave": {name: "Cosmic Weave", price: 3.00, url: "https://cosmic-weave.vercel.app/"},
+    "embers":        {name: "Embers of Release", price: 3.00, url: "https://embers-kappa.vercel.app/"},
+    "pans-oracle":  {name: "Pan's Oracle", price: 3.00, url: "https://pansoracle.vercel.app/"},
+    "pre-school":   {name: "Pre School", price: 3.00, url: "https://pre-school-eta.vercel.app/"},
+    "stinkers":     {name: "Stinkers Buddy", price: 3.00, url: "https://stinkersbuddy.vercel.app/"},
+    "tesla":        {name: "Tesla's Trigram Oracle", price: 3.00, url: "https://tesla-chi-blue.vercel.app/"}
 };
 
 let owned = [];
@@ -213,78 +204,32 @@ const stored = localStorage.getItem("oraclesOwned_v2");
 if (stored) owned = JSON.parse(stored);
 function saveOwnership() { localStorage.setItem("oraclesOwned_v2", JSON.stringify(owned)); }
 
+// The new, simple "button" logic: redirect to PayPal using a static URL
 function acquire(id) {
-    if (owned.includes(id)) { showDownload(id); return; }
-    showPaywall(id);
+    if (owned.includes(id)) { 
+        showDownload(id); 
+        return; 
+    }
+    
+    // Safety check: ensure email is configured
+    if (!PAYPAL_BUSINESS_EMAIL || PAYPAL_BUSINESS_EMAIL === "panapollo369@gmail.com") {
+        alert("Configuration Error: Please update the PAYPAL_BUSINESS_EMAIL variable in the index.html script.");
+        return;
+    }
+
+    const app = apps[id];
+    
+    // Static payment URL constructed (using lc=ZA to fix the region/ZIP issue)
+    const url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${panapollo369@gmail.com}&item_name=${encodeURIComponent(app.name)}&amount=${app.price.toFixed(2)}&currency_code=USD&no_shipping=1&lc=ZA&return=https://theoraclesemporium.com/?paid=${id}`;
+    
+    // This executes the payment "button" by redirecting the browser
+    window.location.href = url;
 }
+
 
 function showDownload(id) {
     document.getElementById("pwa-link").href = apps[id].url;
     document.getElementById("download-modal").style.display = "flex";
-}
-
-function calculateTotal() {
-    let total = 0;
-    document.querySelectorAll('#paywall-apps input[type="checkbox"]:checked').forEach(cb => {
-        total += parseFloat(cb.dataset.price);
-    });
-    document.getElementById("paywall-total").textContent = "$" + total.toFixed(2);
-    return total;
-}
-
-function renderPaypalButton(total) {
-    const container = document.getElementById('paypal-button-container');
-    container.innerHTML = '';
-    if (total > 0 && typeof paypal !== 'undefined') {
-        paypal.Buttons({
-            createOrder: (data, actions) => {
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: { value: total.toFixed(2), currency_code: 'USD' }
-                    }],
-                    application_context: {
-                        shipping_preference: 'NO_SHIPPING',
-                        user_action: 'PAY_NOW' // <<< FIX APPLIED HERE
-                    }
-                });
-            },
-            onApprove: (data, actions) => {
-                return actions.order.capture().then(details => {
-                    document.querySelectorAll('#paywall-apps input[type="checkbox"]:checked').forEach(cb => {
-                        const id = cb.dataset.id;
-                        if (!owned.includes(id)) owned.push(id);
-                    });
-                    saveOwnership();
-                    closeModal('paywall-modal');
-                    alert("Payment successful! All selected realms are now unlocked forever on this device.");
-                    location.reload();
-                });
-            }
-        }).render('#paypal-button-container');
-    } else {
-        container.innerHTML = '<p class="text-amber-400">Select at least one realm to continue.</p>';
-    }
-}
-
-function updatePaywall() { renderPaypalButton(calculateTotal()); }
-
-function showPaywall(preselect = null) {
-    const container = document.getElementById("paywall-apps");
-    container.innerHTML = "";
-    Object.entries(apps).forEach(([id, app]) => {
-        if (owned.includes(id)) {
-            container.innerHTML += `<p class="text-green-400 text-xl">✓ ${app.name} — Already Unlocked</p>`;
-        } else {
-            const checked = (id === preselect) ? "checked" : "";
-            container.innerHTML += `
-                <label class="block my-4 text-xl">
-                    <input type="checkbox" data-id="${id}" data-price="${app.price}" onchange="updatePaywall()" ${checked}>
-                    ${app.name} — $${app.price}
-                </label>`;
-        }
-    });
-    updatePaywall();
-    document.getElementById("paywall-modal").style.display = "flex";
 }
 
 function closeModal(id) { document.getElementById(id).style.display = "none"; }
@@ -302,6 +247,7 @@ window.onclick = e => { if (e.target.classList.contains("modal")) e.target.style
 </script>
 </body>
 </html>
+
 
 
 
