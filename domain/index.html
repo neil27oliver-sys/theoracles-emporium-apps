@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Oracles Emporium</title>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
-<script src="https://www.paypal.com/sdk/js?client-id=AWMjw-JB6E8nFkjToPpNNJkpPk9lxnp1I8IF13-djVLcOQ2daRj2k8tCM4jEHkjm_C8mPpnyO1Wj_rF4&currency=USD"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AWMjw-JB6E8nFkjToPpNNJkpPk9lxnp1I8IF13-djVLcOQ2daRj2k8tCM4jEHkjm_C8mPpnyO1Wj_rF4&currency=USD&locale=automatic"></script> <<< FIX APPLIED HERE
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body{margin:0;padding:0;font-family:'Helvetica Neue',Arial,sans-serif;background:#001F3F;color:#FFFFF0;line-height:1.6;}
@@ -123,7 +124,6 @@
         <img src="/assets/site.png" alt="Portal Snapshot">
     </section>
 
-    <!-- YOUR EXACT APPROVED LAUNCH MODAL — 100% untouched from your first screenshot -->
     <div id="download-modal" class="modal">
         <div class="max-w-2xl w-full bg-gradient-to-b from-gray-900 to-black rounded-3xl shadow-2xl border border-amber-800 p-10 text-center relative">
             <span class="close" onclick="closeModal('download-modal')">&times;</span>
@@ -243,7 +243,8 @@ function renderPaypalButton(total) {
                         amount: { value: total.toFixed(2), currency_code: 'USD' }
                     }],
                     application_context: {
-                        shipping_preference: 'NO_SHIPPING'   // This single line is what actually removes address/ZIP/phone worldwide
+                        shipping_preference: 'NO_SHIPPING',
+                        user_action: 'PAY_NOW' // <<< FIX APPLIED HERE
                     }
                 });
             },
@@ -301,6 +302,7 @@ window.onclick = e => { if (e.target.classList.contains("modal")) e.target.style
 </script>
 </body>
 </html>
+
 
 
 
