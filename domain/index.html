@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Oracles Emporium</title>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+     <!-- ONLY THIS LINE ADDED – the working PayPal SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AWMjw-JB6E8nFkjToPpNNJkpPk9lxnp1I8IF13-djVLcOQ2daRj2k8tCM4jEHkjm_C8mPpnyO1Wj_rF4&currency=USD&components=buttons"></script>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
@@ -118,6 +120,13 @@
             </div>
         </div>
     </section>
+     <!-- THIS IS THE ONLY THING ADDED – your single $3 button -->
+            <div class="text-center mt-16">
+                <h2 class="text-4xl glow mb-8">Unlock ALL Realms Forever – One Payment</h2>
+                <div id="paypal-button-container" style="max-width:400px;margin:0 auto;"></div>
+            </div>
+        </div>
+    </section>
 
     <section class="site-preview container">
         <h2 class="text-center text-4xl glow mb-10">Portal Snapshot</h2>
@@ -217,11 +226,28 @@ function enterEmporium() {
     video.play(); audio.play();
     video.onended = () => { media.style.display = "none"; document.getElementById("apps").scrollIntoView({behavior:"smooth"}); };
 }
-
 window.onclick = e => { if (e.target.classList.contains("modal")) e.target.style.display = "none"; };
+// ONLY THIS NEW FUNCTION ADDED – the working $3 button
+paypal.Buttons({
+    createOrder: (data, actions) => {
+        return actions.order.create({
+            purchase_units: [{ amount: { value: "3.00" } }],
+            application_context: { shipping_preference: "GET_FROM_FILE" }
+        });
+    },
+    onApprove: (data, actions) => {
+        return actions.order.capture().then(() => {
+            owned = Object.keys(apps); // unlock everything
+            saveOwnership();
+            alert("Payment complete! All realms are now yours forever.");
+            location.reload();
+        });
+    }
+}).render('#paypal-button-container');
 </script>
 </body>
 </html>
+
 
 
 
