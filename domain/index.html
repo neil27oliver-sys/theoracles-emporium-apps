@@ -220,7 +220,7 @@ function acquire(id) {
         return;
     }
     currentApp = id;
-    document.getElementById("paywall-title").textContent = `Unlock ${apps[id].name} – $3`;
+    document.getElementById("paywall-title").textContent = `Unlock ${apps[id].name} – $15`;
     document.getElementById("paywall-modal").style.display = "flex";
     renderPaypalButton();
 }
@@ -270,6 +270,7 @@ window.onclick = e => { if (e.target.classList.contains("modal")) e.target.style
 </script>
 </body>
 </html>
+
 
 
 
